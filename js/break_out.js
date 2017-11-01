@@ -119,7 +119,7 @@ phina.define("MainScene", {
             label.setPosition(this.gridX.center(), this.gridY.center());
             this.status = "ready";
         }
-    },
+    }
 });
 
 phina.define("Block",{
