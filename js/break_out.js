@@ -51,8 +51,7 @@ phina.define("MainScene", {
             // 画面端当たり判定
             if(ball.top < screenRect.top) {
                 ball.vy = -ball.vy;
-            }
-            if(ball.left < screenRect.left || ball.right > screenRect.right) {
+            } else if(ball.left < screenRect.left || ball.right > screenRect.right) {
                 ball.vx = -ball.vx;
             }
 
@@ -104,7 +103,7 @@ phina.define("Block",{
             height: 60,
             fill: "orange",
         });
-    },
+    }
 });
 
 phina.define("Paddle", {
@@ -115,7 +114,7 @@ phina.define("Paddle", {
             height: 30,
             fill: "white",
         });
-    },
+    }
 });
 
 phina.define("Ball", {
@@ -125,7 +124,7 @@ phina.define("Ball", {
             radius: 10,
             fill: "white",
         });
-    },
+    }
 });
 
 phina.main(function() {
