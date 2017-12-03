@@ -11,6 +11,7 @@ phina.define("MainScene", {
 phina.main(function() {
     var app = GameApp({
         title: "Break Out",
+        fps: 30,
     });
     app.run();
 });

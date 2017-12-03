@@ -5,7 +5,6 @@ phina.define("MainScene", {
     init: function() {
         this.superInit();
         this.backgroundColor = "black";
-        this.screenRect = Rect(0, 0, 640, 960);
         this.blockGroup = DisplayElement().addChildTo(this);
 
         // パドル表示
@@ -19,6 +18,7 @@ phina.define("MainScene", {
         this.onpointend = function() {
             if(this.status == "ready") {
                 this.ball.vy = -10;
+                this.ball.vx = 10;
                 this.status = "move";
             }
         };
@@ -33,6 +33,7 @@ phina.define("MainScene", {
         this.ball = Ball().addChildTo(this);
         this.paddle = paddle;
         this.status = "ready";
+        this.screenRect = Rect(0, 0, 640, 960);
     },
 
     update: function() {
@@ -49,11 +50,13 @@ phina.define("MainScene", {
         // ボール移動時
         } else if (this.status == "move") {
             ball.moveBy(ball.vx, ball.vy);
+
             // 画面端当たり判定
+            if (ball.left < screenRect.left || ball.right > screenRect.right) {
+                ball.vx = -ball.vx;
+            }
             if (ball.top < screenRect.top) {
                 ball.vy = -ball.vy;
-            } else if (ball.left < screenRect.left || ball.right > screenRect.right) {
-                ball.vx = -ball.vx;
             }
 
             // パドル当たり判定
@@ -64,25 +67,25 @@ phina.define("MainScene", {
                 ball.vx = -dx / 5;
             }
 
-            // ブロック当たり判定
-            for (var i = 0; i < this.blockGroup.children.length; i++) {
-                var block = this.blockGroup.children[i]
-
-                if (ball.hitTestElement(block)) {
-                    if (ball.top < block.top || ball.bottom > block.bottom) {
-                        ball.vy = -ball.vy;
-                    } else if (ball.left < block.left || block.right < ball.right) {
-                        ball.vx = -ball.vx;
-                    }
-                    block.remove();
-                }
-            }
-
             // ゲームオーバー判定
             if (ball.top > screenRect.bottom) {
                 Label({text: 'GAME OVER', fill: 'yellow'})
                     .addChildTo(this)
                     .setPosition(this.gridX.center(), this.gridY.center());
+            }
+
+            // ブロック当たり判定
+            for (var i = 0; i < this.blockGroup.children.length; i++) {
+                var block = this.blockGroup.children[i]
+
+                if (ball.hitTestElement(block)) {
+                    block.remove();
+                    if (ball.top < block.top || ball.bottom > block.bottom) {
+                        ball.vy = -ball.vy;
+                    } else if (ball.left < block.left || block.right < ball.right) {
+                        ball.vx = -ball.vx;
+                    }
+                }
             }
 
             // クリア判定
@@ -131,6 +134,7 @@ phina.define("Block",{
 phina.main(function() {
     var app = GameApp({
         title: "Break Out",
+        fps: 30,
     });
     app.run();
 });
