@@ -63,8 +63,8 @@ phina.define("MainScene", {
             if (ball.hitTestElement(paddle)) {
                 ball.bottom = paddle.top;
                 ball.vy = -ball.vy;
-                var dx = paddle.x - ball.x;
-                ball.vx = -dx / 5;
+                var dx = ball.x - paddle.x;
+                ball.vx = dx / 5;
             }
 
             // ゲームオーバー判定
@@ -76,7 +76,7 @@ phina.define("MainScene", {
 
             // ブロック当たり判定
             for (var i = 0; i < this.blockGroup.children.length; i++) {
-                var block = this.blockGroup.children[i]
+                var block = this.blockGroup.children[i];
 
                 if (ball.hitTestElement(block)) {
                     block.remove();

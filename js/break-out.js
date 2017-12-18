@@ -5,7 +5,7 @@ phina.define("MainScene", {
     init: function() {
         this.superInit();
         this.backgroundColor = "black";
-    }
+    },
 });
 
 phina.main(function() {
